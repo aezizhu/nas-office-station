@@ -4287,17 +4287,17 @@ function loadDocument(d, {kind = 'upload'} = {}) {
   thumbsEl.hidden = false;
   renderThumbs(pages, {token: d.token});
   syncThumbs();
-  // paper: switch automatically ONLY for A3 (the trays hold A4; an unloaded size makes the printer wait)
+  // Document dimensions do not establish which paper is loaded. Keep the default paper size.
   sizeHintLive = false;
   if (kind === 'copy' && d.size === 'A3') {
     // a default flatbed scan is the whole glass (A3-sized): print it on the A4 in the trays, never wait for A3 paper
     setPaperNote('This scan covers the full A3 glass and will shrink to about 70% on A4. To copy an A4 original at actual size, choose A4 when scanning');
-  } else if (kind === 'upload' && d.size === 'A3' && [...paper.options].some(o => o.value === 'A3')) {
-    paper.value = 'A3';
-    setPaperHint('A3 document detected; A3 paper selected. Load A3 paper in the tray');
   } else {
     sizeHintLive = true;
     refreshSizeHint();
+    if (kind === 'upload' && d.size === 'A3') {
+      setPaperNote('To print on A3 paper, select A3 manually and confirm that A3 paper is loaded in the tray');
+    }
   }
   updatePrint();
 }

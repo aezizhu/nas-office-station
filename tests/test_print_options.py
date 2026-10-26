@@ -126,6 +126,7 @@ def test_long_every_other_page_selection_reaches_lp(m, client, cups):
 def test_desc_in_response_and_job_message(m, client, cups):
     code, j = post(client, make_doc(m), paper="A3", sides="DuplexTumble", copies="3", pages="2,4-6")
     assert code == 200
+    assert "PageSize=A3" in sup.lp_options(cups.lp_calls()[0])
     assert j["desc"] == "3 copies / A3 / Double-sided, short edge (SEF) / Pages 2,4-6 (12 pages total, 4 selected)"
     v = m.job_view(j["job"], "print")
     assert v == {"state": "running", "msg": "Sent to the printer (%s); printing..." % j["desc"], "file": ""}

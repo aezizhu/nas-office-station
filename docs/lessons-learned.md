@@ -75,6 +75,8 @@ A correctly rendered PDF can still be printed at the wrong scale. Always fitting
 
 Expose the choice. The station offers actual size with shrinking when necessary, and fit-to-printable-area. Scanned copies and authored documents can reasonably start with different defaults. Query the selected queue's real paper, duplex and resolution options rather than assuming a requested option took effect.
 
+Document dimensions do not identify the paper loaded in a tray. Automatically selecting A3 media for an A3 PDF can cause a paper wait or clipping if the printer substitutes smaller paper. Uploads now keep the station's A4 default and explain the resulting scaling; A3 printing requires an explicit selection and a reminder to load matching paper. A printer's default-media attribute is also not proof of what is physically loaded. See the [paper-selection regression tests](../tests/test_print_paper_ui.py).
+
 Test page selection, copies, orientation and scaling together. A page-range parser must reject invalid ranges before a real job is submitted. See [print options](../tests/test_print_options.py) and [page-selection tests](../tests/test_print_pages.py).
 
 ## 7. Job ownership and admission are correctness requirements
