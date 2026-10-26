@@ -1,0 +1,6 @@
+# Python dependencies for source development. The Dockerfile uses Debian packages.
+Flask>=2.2,<4
+Pillow>=9.4,<14
+numpy>=1.24,<3
+opencv-python-headless>=4.6,<6
+img2pdf>=0.4.4,<0.7

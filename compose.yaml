@@ -1,0 +1,31 @@
+services:
+  office-station:
+    build:
+      context: .
+      args:
+        CONVERTER_IMAGE: ${CONVERTER_IMAGE:-docx-print-converter:0.1.0}
+    image: nas-office-station:0.1.0
+    restart: unless-stopped
+    ports:
+      - "${STATION_BIND_IP:-127.0.0.1}:${STATION_PORT:-8071}:8071"
+    environment:
+      # Set these in your shell or your NAS container manager. Do not commit secrets.
+      PRINTER_URI: ${PRINTER_URI:?Set the printer URI, for example socket://192.0.2.10:9100}
+      STATION_PRINTER_IP: ${STATION_PRINTER_IP:?Set the printer address}
+      STATION_PASSWORD: ${STATION_PASSWORD:?Set a station password}
+      STATION_USER: ${STATION_USER:-office}
+      STATION_QUEUE: ${STATION_QUEUE:-M437}
+      PRINTER_DRIVER: ${PRINTER_DRIVER:-drv:///sample.drv/generic.ppd}
+      SCANNER_NAME: ${SCANNER_NAME:-HP M437}
+      SCANNER_PROTOCOL: ${SCANNER_PROTOCOL:-wsd}
+      SCANNER_URL: ${SCANNER_URL:-}
+      STATION_DEV: ${STATION_DEV:-airscan:w0:HP M437}
+    volumes:
+      - station-data:/data
+    mem_limit: 2g
+    pids_limit: 256
+    cpus: 2.0
+    stop_grace_period: 30s
+
+volumes:
+  station-data:

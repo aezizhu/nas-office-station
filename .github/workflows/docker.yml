@@ -1,0 +1,35 @@
+name: Docker acceptance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-and-boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build the released converter base
+        run: |
+          git clone --depth 1 --branch v0.1.0 https://github.com/aezizhu/docx-print-converter.git /tmp/converter
+          docker build -t docx-print-converter:0.1.0 /tmp/converter
+      - name: Build station
+        run: docker build -t nas-office-station:test .
+      - name: Verify startup and authentication without printer access
+        run: |
+          docker run -d --name station --network none --memory 2g --pids-limit 256 \
+            -e PRINTER_URI=socket://192.0.2.10:9100 \
+            -e STATION_PRINTER_IP=192.0.2.10 \
+            -e STATION_PASSWORD=ci-generated-test-password \
+            nas-office-station:test
+          for attempt in $(seq 1 60); do
+            if docker exec station /opt/nas-office-station/scripts/healthcheck.sh; then break; fi
+            sleep 2
+          done
+          docker exec station /opt/nas-office-station/scripts/healthcheck.sh
+          docker exec station python3 -c 'from urllib.request import urlopen; from urllib.error import HTTPError; exec("try:\n urlopen(\"http://127.0.0.1:8071/status\")\n raise AssertionError(\"Anonymous request accepted\")\nexcept HTTPError as e:\n assert e.code == 401")'
+          docker logs station
+          docker stop station
+      - name: Show startup logs on failure
+        if: failure()
+        run: docker logs station || true

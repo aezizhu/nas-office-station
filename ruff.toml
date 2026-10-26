@@ -1,0 +1,10 @@
+# Preserve the existing compact style; enforce checks for runtime defects.
+line-length = 200
+target-version = "py311"
+
+[lint]
+select = ["E9", "F", "E722", "E703", "B006", "B008", "B017", "B018", "B025", "B028"]
+ignore = ["E731", "F841"]
+
+[lint.per-file-ignores]
+"tests/*" = ["E722"]

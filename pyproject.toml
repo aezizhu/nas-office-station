@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nas-office-station"
+version = "0.1.0"
+description = "A local scan and print station for the HP LaserJet MFP M437nda"
+requires-python = ">=3.11"
+license = {text = "Apache-2.0"}
+dependencies = [
+  "Flask>=2.2,<4",
+  "Pillow>=9.4,<14",
+  "numpy>=1.24,<3",
+  "opencv-python-headless>=4.6,<6",
+  "img2pdf>=0.4.4,<0.7",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8,<10", "pypdf>=6,<7", "pikepdf>=9,<11", "ruff>=0.9", "PyYAML>=6,<7"]
+
+[tool.setuptools]
+py-modules = ["scan_app", "scan_orientation", "office_conversion"]
+package-dir = {"" = "app"}
