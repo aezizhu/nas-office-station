@@ -124,6 +124,10 @@ python3 -m pytest
 
 System tools such as Poppler, CUPS, SANE, Tesseract, and the Office converters are also required for their integration tests. Test guards must prevent unit tests from sending real print or scan jobs. Use a disposable container for hardware-free regression tests.
 
+## Release validation
+
+The initial release passed **685 automated tests** with 8 explicitly skipped optional tests, plus lint and public-source boundary checks. A clean Docker build also passed startup, CUPS readiness, health-check authentication, and anonymous-access rejection in a network-isolated CI environment. These checks do not replace physical scan and print acceptance on a configured device.
+
 ## License
 
 Project code is licensed under Apache License 2.0. Runtime components retain their own licenses, including AGPLv3 for the converter's ONLYOFFICE Community component. The proprietary HP/Samsung scanner driver is optional and is not redistributed. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
