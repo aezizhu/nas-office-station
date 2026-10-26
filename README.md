@@ -110,6 +110,7 @@ The DOCX converter improves specific compatibility classes; it cannot guarantee 
 
 ## Operations and development
 
+- [Engineering findings and lessons learned](docs/lessons-learned.md)
 - [Configuration and operation](docs/operations.md)
 - [Hardware and optional HP backend](docs/hardware.md)
 - [API outline](docs/api.md)
